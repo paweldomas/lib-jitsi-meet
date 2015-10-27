@@ -9,6 +9,7 @@ var Logger = require("jitsi-meet-logger");
 var RTC = require("./modules/RTC/RTC");
 var Statistics = require("./modules/statistics/statistics");
 var Resolutions = require("./service/RTC/Resolutions");
+var TokenGenerator = require("./modules/xmpp/token_generator");
 var ScriptUtil = require("./modules/util/ScriptUtil");
 
 function getLowerResolution(resolution) {
@@ -42,6 +43,9 @@ var LibJitsiMeet = {
         conference: JitsiConferenceErrors,
         connection: JitsiConnectionErrors,
         track: JitsiTrackErrors
+    },
+    generateToken: function (roomName, ts, appId, appSecret) {
+        return TokenGenerator.generateToken(roomName, ts, appId, appSecret);
     },
     logLevels: Logger.levels,
     /**
