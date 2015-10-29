@@ -1,18 +1,33 @@
+//var options = {
+//    hosts: {
+//        domain: "prod-us-east-1-app-xmpp1.internal.meet.hipchat.ninja",
+//        focus: "focus.prod-us-east-1-app-xmpp1.internal.meet.hipchat.ninja",
+//        muc: "conference.prod-us-east-1-app-xmpp1.internal.meet.hipchat.ninja", // FIXME: use XEP-0030
+//    },
+//    bosh: "https://xmpp1-meet.hipchat.me/http-bind", // FIXME: use xep-0156 for that
+//    clientNode: "http://prod-us-east-1-app-xmpp1.internal.meet.hipchat.ninja/jitsimeet" // The name of client node advertised in XEP-0115 'c' stanza
+//};
+
 var options = {
     hosts: {
-        call_control: "callcontrol.chaos.hipchat.me",
-        focus: "focus.chaos.hipchat.me",
-        domain: 'chaos.hipchat.me',
-        muc: 'conference.chaos.hipchat.me', // FIXME: use XEP-0030
-        bridge: 'jitsi-videobridge.chaos.hipchat.me', // FIXME: use XEP-0030
+        domain: 'pawel.jitsi.net',
+        muc: 'conference.pawel.jitsi.net', // FIXME: use XEP-0030
+        bridge: 'jitsi-videobridge.pawel.jitsi.net', // FIXME: use XEP-0030
     },
-    bosh: '//chaos.hipchat.me/http-bind', // FIXME: use xep-0156 for that
+    bosh: '//pawel.jitsi.net/http-bind', // FIXME: use xep-0156 for that
     clientNode: 'http://jitsi.org/jitsimeet', // The name of client node advertised in XEP-0115 'c' stanza
 }
 
 var confOptions = {
     openSctp: true
 }
+
+var APP_ID = "app";
+var APP_SECRET = "secret";
+var roomName = "testroom1234";
+var ts = new Date().getTime();
+
+var token = JitsiMeetJS.generateToken(roomName, ts, APP_ID, APP_SECRET);
 
 
 var isJoined = false;
@@ -105,7 +120,7 @@ function onUserLeft(id) {
  * That function is called when connection is established successfully
  */
 function onConnectionSuccess(){
-    room = connection.initJitsiConference("conference11", confOptions);
+    room = connection.initJitsiConference(roomName, confOptions);
     room.on(JitsiMeetJS.events.conference.TRACK_ADDED, onRemoteTrack);
     room.on(JitsiMeetJS.events.conference.TRACK_REMOVED, function (track) {
         console.log("track removed!!!" + track);
@@ -139,7 +154,7 @@ function onConnectionSuccess(){
 /**
  * This function is called when the connection fail.
  */
-function onConnectionFailed(){console.error("Connection Failed!")};
+function onConnectionFailed(msg1, msg2){console.error("Connection Failed!", msg1, msg2)};
 
 /**
  * This function is called when we disconnect.
@@ -215,7 +230,7 @@ var initOptions = {
     desktopSharingFirefoxExtensionURL: null
 }
 JitsiMeetJS.init(initOptions).then(function(){
-    connection = new JitsiMeetJS.JitsiConnection(null, null, options);
+    connection = new JitsiMeetJS.JitsiConnection(APP_ID, token, options);
 
     connection.addEventListener(JitsiMeetJS.events.connection.CONNECTION_ESTABLISHED, onConnectionSuccess);
     connection.addEventListener(JitsiMeetJS.events.connection.CONNECTION_FAILED, onConnectionFailed);
