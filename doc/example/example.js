@@ -202,7 +202,7 @@ $(window).bind('unload', unload);
 
 
 
-// JitsiMeetJS.setLogLevel(JitsiMeetJS.logLevels.ERROR);
+JitsiMeetJS.setLogLevel(JitsiMeetJS.logLevels.TRACE);
 var initOptions = {
     disableAudioLevels: true,
     // Desktop sharing method. Can be set to 'ext', 'webrtc' or false to disable.
