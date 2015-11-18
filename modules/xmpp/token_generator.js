@@ -1,4 +1,8 @@
-var jssha = require('jssha');
+//var jsjws = require('jsjws');
+
+var KJUR = require('jsrsasign');
+
+console.info("JWS: ", KJUR);
 
 module.exports = {
 
@@ -7,12 +11,27 @@ module.exports = {
     },
     generateToken: function (roomName, ts, appId, appSecret) {
 
-        var hashInput = roomName + ts + appId + appSecret;
+        // Header
+        var oHeader = {
+            alg: 'HS256',
+            typ: 'JWT'
+        };
 
-        console.info("Generating token for: " + hashInput);
-        var token = (new jssha(hashInput, 'TEXT')).getHash('SHA-256', 'HEX');
-        token = token + "_" + roomName + "_" + ts;
-        console.info("Token: " + token);
-        return token;
+        // Payload
+        var oPayload = {
+            iss: 'app',
+            room: 'room',
+            nbf: KJUR.jws.IntDate.get('now'),
+            exp: KJUR.jws.IntDate.get('now + 1day')
+        };
+
+        // Sign JWT, password=secret
+        var sHeader = JSON.stringify(oHeader);
+        var sPayload = JSON.stringify(oPayload);
+        var sJWT = KJUR.jws.JWS.sign(null, sHeader, sPayload, "secret");
+
+        console.info("Token: " + sJWT);
+
+        return sJWT;
     }
 };
