@@ -19,8 +19,8 @@ module.exports = {
 
         // Payload
         var oPayload = {
-            iss: 'app',
-            room: 'room',
+            iss: appId,
+            room: roomName,
             nbf: KJUR.jws.IntDate.get('now'),
             exp: KJUR.jws.IntDate.get('now + 1day')
         };
@@ -28,7 +28,7 @@ module.exports = {
         // Sign JWT, password=secret
         var sHeader = JSON.stringify(oHeader);
         var sPayload = JSON.stringify(oPayload);
-        var sJWT = KJUR.jws.JWS.sign(null, sHeader, sPayload, "secret");
+        var sJWT = KJUR.jws.JWS.sign(null, sHeader, sPayload, appSecret);
 
         console.info("Token: " + sJWT);
 
