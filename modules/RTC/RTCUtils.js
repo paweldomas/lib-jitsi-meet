@@ -548,7 +548,7 @@ var RTCUtils = {
                             throw new Error('video element must be visible to attach video stream');
                         }
 
-                        attachMediaStream(elSel[0], stream);
+                        window.attachMediaStream(elSel[0], stream);
                     };
                     self.getStreamID = function (stream) {
                         var id = SDPUtil.filter_special_chars(stream.label);
