@@ -8,6 +8,10 @@ PR_BRANCH=${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH}
 
 echo "PR_BRANCH=${PR_BRANCH}"
 
+LIB_JITSI_MEET_HASH=$(git log -1 --pretty=format':%h')
+
+echo "lib-jitsi-meet commit hash: ${LIB_JITSI_MEET_HASH}"
+
 # FIXME this is duplicated logic from jitsi-meet script
 if [ $PR_BRANCH != "master" ]; then
     echo "Will merge lib-jitsi-meet ${PR_BRANCH} into the master"
@@ -44,4 +48,4 @@ sed -i.bak -e "s/\"lib-jitsi-meet.*/\"lib-jitsi-meet\"\: \"file:..\/lib-jitsi-me
 
 echo "Executing build-ipa script in jitsi-meet..."
 
-. ./ios/travis-ci/build-ipa.sh
+. ./ios/travis-ci/build-ipa.sh $LIB_JITSI_MEET_HASH
